@@ -9,7 +9,7 @@ from util import *
 from logger import *
 
 @retry(times=5, exceptions=(ValueError))
-def crawling_naver_flight() -> list:
+def crawling_naver_flight_2() -> list:
 
     try:
         url = "http://flight.naver.com/flights"
@@ -73,22 +73,23 @@ def crawling_naver_flight() -> list:
         wait_until_by_xpath('//button[text() = "미주"]')
         browser.find_element(By.XPATH, '//button[text() = "미주"]').click()
         time.sleep(3)
-        browser.find_element(By.XPATH, '//i[contains(text(), "LAX")]').click()
+        browser.find_element(By.XPATH, '//i[contains(text(), "SFO")]').click()
         time.sleep(3)
-        browser.find_elements(By.XPATH, '//b[text() = "LAX"]')[1].click()
+        browser.find_elements(By.XPATH, '//b[text() = "SFO"]')[1].click()
         time.sleep(3)
         browser.find_element(By.XPATH, '//button[text() = "미주"]').click()
-        wait_until_by_xpath('//i[contains(text(), "SFO")]')
-        browser.find_element(By.XPATH, '//i[contains(text(), "SFO")]').click()
+        wait_until_by_xpath('//i[contains(text(), "LAX")]')
+        browser.find_element(By.XPATH, '//i[contains(text(), "LAX")]').click()
         time.sleep(2)
         browser.find_element(By.XPATH, '//span[contains(text(), "항공권 검색")]').click()
-        
+
         time.sleep(10)
         res = WebDriverWait(browser, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".indivisual_results__3bdgf")))
         res_list = res.text.split("\n")
-        #browser.quit()
+        
+        browser.quit()
     except:
-        #browser.quit()
+        browser.quit()
         raise ValueError("Crawling 에러입니다.")
     
     return res_list
