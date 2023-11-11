@@ -1,8 +1,8 @@
 from kakao import *
 from util import *
-from app.crawling_frm_SFO_to_LAX import *
+from crawling_frm_SFO_to_LAX import *
 from logger import *
-from app.crawling_frm_LAX_to_SFO import *
+from crawling_frm_LAX_to_SFO import *
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -23,7 +23,7 @@ def refresh_token():
 
 def main_LAX_SFO():
     logger(__name__).info("Crawling start")
-    crawling_data = crawling_naver_flight_from_LAX_to_SFO()
+    crawling_data = crawling_naver_flight_frm_LAX_to_SFO()
     logger(__name__).info("Crawlingcomplele")
     logger(__name__).info("post processing")
     post_processing_data = post_processing(crawling_data)
@@ -32,7 +32,7 @@ def main_LAX_SFO():
     kakao.send_to_kakao(text_data)
 def main_SFO_LAX():
     logger(__name__).info("Crawling start")
-    crawling_data = crawling_naver_flight_from_SFO_to_LAX()
+    crawling_data = crawling_naver_flight_frm_SFO_to_LAX()
     logger(__name__).info("Crawlingcomplele")
     logger(__name__).info("post processing")
     post_processing_data = post_processing(crawling_data)

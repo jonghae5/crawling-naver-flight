@@ -9,7 +9,7 @@ from util import *
 from logger import *
 
 @retry(times=5, exceptions=(ValueError))
-def crawling_naver_flight_2() -> list:
+def crawling_naver_flight_frm_LAX_to_SFO() -> list:
 
     try:
         url = "http://flight.naver.com/flights"
