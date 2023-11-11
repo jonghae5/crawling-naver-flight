@@ -1,8 +1,8 @@
 from kakao import *
 from util import *
-from crawling import *
+from app.crawling_frm_SFO_to_LAX import *
 from logger import *
-from crawling_2 import *
+from app.crawling_frm_LAX_to_SFO import *
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -21,18 +21,18 @@ def refresh_token():
     return
 
 
-def main():
+def main_LAX_SFO():
     logger(__name__).info("Crawling start")
-    crawling_data = crawling_naver_flight()
+    crawling_data = crawling_naver_flight_from_LAX_to_SFO()
     logger(__name__).info("Crawlingcomplele")
     logger(__name__).info("post processing")
     post_processing_data = post_processing(crawling_data)
     text_data = convert_list_to_kakao_text(post_processing_data)
     kakao = Kakao()
     kakao.send_to_kakao(text_data)
-def main_2():
+def main_SFO_LAX():
     logger(__name__).info("Crawling start")
-    crawling_data = crawling_naver_flight_2()
+    crawling_data = crawling_naver_flight_from_SFO_to_LAX()
     logger(__name__).info("Crawlingcomplele")
     logger(__name__).info("post processing")
     post_processing_data = post_processing(crawling_data)
@@ -42,10 +42,10 @@ def main_2():
 if __name__ =="__main__":
     logger(__name__).info("System Start...")
     schedule = BlockingScheduler({'apscheduler.timezone':'Asia/seoul'})
-    schedule.add_job(main, morning_trigger)
-    schedule.add_job(main, evening_trigger)
-    schedule.add_job(main_2, morning_trigger_2)
-    schedule.add_job(main_2, evening_trigger_2)
+    schedule.add_job(main_LAX_SFO, morning_trigger)
+    schedule.add_job(main_LAX_SFO, evening_trigger)
+    schedule.add_job(main_SFO_LAX, morning_trigger_2)
+    schedule.add_job(main_SFO_LAX, evening_trigger_2)
 
     schedule.add_job(refresh_token, interval_trigger)
     #schedule.add_job(main_2, test_trigger)
